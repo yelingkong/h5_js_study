@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>九宫格拖动</title>
+    <script src="../js/jquery.min.js"></script>
+</head>
+<body>
+<style>
+    ul {
+        width: 1680px;
+    }
+
+    li {
+        list-style-type: none;
+        width: 560px;
+        height: 350px;
+        float: left;
+    }
+</style>
+<div class="container">
+    <ul>
+        <li draggable="true">
+            <img src="images/1538032073661_02.jpg" alt="">
+        </li>
+        <li draggable="true">
+            <img src="images/1538032073661_01.jpg" alt="">
+        </li>
+        <li draggable="true">
+            <img src="images/1538032073661_04.jpg" alt="">
+        </li>
+        <li draggable="true">
+            <img src="images/1538032073661_03.jpg" alt="">
+        </li>
+        <li draggable="true">
+            <img src="images/1538032073661_05.jpg" alt="">
+        </li>
+        <li draggable="true">
+            <img src="images/1538032073661_08.jpg" alt="">
+        </li>
+        <li draggable="true">
+            <img src="images/1538032073661_09.jpg" alt="">
+        </li>
+        <li draggable="true">
+            <img src="images/1538032073661_07.jpg" alt="">
+        </li>
+        <li draggable="true">
+            <img src="images/1538032073661_06.jpg" alt="">
+        </li>
+    </ul>
+</div>
+<script>
+    (function ($) {
+        var dragSrc;
+        $('li').each(function (index, ele) {
+            $(ele).on('dragstart', function (e) {
+                dragSrc = this;
+                e.originalEvent.dataTransfer.setData('text/html', this.innerHTML);
+            }).on("dragover", function (e) {
+                e.preventDefault();
+            }).on("drop", function (e) {
+                if (dragSrc != this) {
+                    dragSrc.innerHTML = this.innerHTML;
+                    this.innerHTML = e.originalEvent.dataTransfer.getData("text/html");
+                }
+            })
+        })
+    })(jQuery);
+</script>
+</body>
+</html>
