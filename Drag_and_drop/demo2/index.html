@@ -3,8 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>调查问卷Drag</title>
+    <script src="../js/jquery.min.js"></script>
 </head>
 <body>
+<style>
+    .page {
+        width: 1000px;
+        margin: 0px auto;
+    }
+
+    .left {
+        width: 500px;
+        float: left;
+    }
+
+    .left .container {
+        padding: 10px;
+        min-height: 500px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .left .containerDrop {
+        background-color: #eeeeee;
+
+    }
+
+    .left .container h1 {
+        text-align: center;
+    }
+
+    .right {
+        width: 500px;
+        float: left;
+        box-sizing: border-box;
+        border-left: 1px solid red;
+    }
+    .right .ctrlList{
+        padding: 10px;
+    }
+    .right .ctrlList .box{
+        border: 1px dashed gray;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .line{
+        margin-top:10px;
+        margin-bottom:10px;
+        padding:5px;
+    }
+</style>
 <div class="page">
     <div class="left">
         <div id="container" class="container">
@@ -66,5 +115,27 @@
         </div>
     </div>
 </div>
+<script>
+    (function($){
+        $('.box').each(function(index,ele){
+            $(ele).on("dragstart",function(event){
+                dragSrc=this;
+            });
+        });
+        $("#container").on("drop",function(e){
+            e.preventDefault();
+            $(this).append($(dragSrc).find('.line').clone());
+            $(this).removeClass("containerDrop");
+        }).on("dragover",function(e){
+            e.preventDefault();
+        }).on("dragenter",function(e){
+            e.preventDefault();
+            $(this).addClass("containerDrop");
+        }).on("dragleave",function(e){
+            e.preventDefault();
+            $(this).removeClass("containerDrop");
+        });
+    })(jQuery);
+</script>
 </body>
 </html>
