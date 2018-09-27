@@ -27,6 +27,7 @@
             if(!db.objectStoreNames.contains(osName)){
                 store = db.createObjectStore(osName,{keyPath:'id'})
                 store.createIndex('idIndex','id',{unique:true})
+                store.createIndex('hpIndex','hp',{unique:false})
                 store.createIndex('categoryIndex','category',{multiEntry:true})
             }
         }
@@ -109,6 +110,38 @@
         request.onsuccess=function () {
             console.log('clear success')
         }
+    }
+    function useCursorGetData(){
+        var transaction=db.transaction(osName,'readwrite'),
+            store=transaction.objectStore(osName)
+        request = store.openCursor(null,'prev')
+        // request = store.openCursor(IDBKeyRange.only('002'))
+        request.onsuccess=function(){
+            var cursor = request.result
+            if(cursor){
+                console.log(cursor.value)
+                cursor.continue()
+            }
+        }
+    }
+    function useIndexGetData(){
+        var transaction=db.transaction(osName,'readwrite'),
+            store=transaction.objectStore(osName)
+        index = store.index('hpIndex'),
+            request=index.openCursor(IDBKeyRange.bound(5,10,true,true))
+
+        request.onsuccess=function(){
+            var cursor = request.result, value= null
+            if(cursor){
+                value=cursor.value
+                value.hp+=20
+                cursor.update(value)
+                console.log(cursor.value)
+                cursor.continue()
+            }
+
+        }
+
     }
 </script>
 </body>

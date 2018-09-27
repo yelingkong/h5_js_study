@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" manifest="manifest.appcache">
+<head>
+    <meta charset="UTF-8">
+    <title>learn Application Cache</title>
+
+</head>
+<body>
+<style>
+    .div{width:100px; height: 100px; background-repeat: no-repeat;background-size: contain;}
+    @media(max-width:300px){
+        .div{background-image:url("test@1.jpg"); }
+    }
+    @media(min-width:300px) and (max-width:600px){
+        .div{background-image:url("test@2.jpg"); }
+    }
+    @media(min-width:600px) and (max-width:900px){
+        .div{background-image:url("test@3.jpg"); }
+    }
+</style>
+<img src="test.jpg" alt="">
+<div class="div"></div>
+<script src="test.js"></script>
+</body>
+</html>
