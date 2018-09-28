@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件拖动上传</title>
+    <link rel="stylesheet" href="font/iconfont.css">
+    <script src="../js/jquery.min.js"></script>
+</head>
+<body>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    .container {
+        width: 400px;
+        height: 300px;
+        margin: 100px auto;
+        border: 2px dashed black;
+        overflow: auto;
+        box-sizing: border-box;
+    }
+
+    .containerDrop {
+        border: 2px dashed blue;
+    }
+
+    .tips {
+        line-height: 290px;
+        text-align: center;
+    }
+
+    .file {
+        width: 100%;
+        height: 40px;
+        list-style-type: none;
+        display: block;
+        position: relative;
+    }
+
+    .text {
+        line-height: 40px;
+        font-size: 20px;
+        position: relative;
+        z-index: 2;
+        padding-left: 10px;
+    }
+
+    .progress {
+        background: #B0E24B;
+        width: 0;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .none {
+        display: none;
+    }
+
+    .icon {
+        margin-right: 10px;
+    }
+
+    .icon-jiazai:before {
+        -webkit-animation: spin 1s linear 1s 5 alternate;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+    }
+
+    .icon-chenggong {
+        color: greenyellow;
+    }
+
+    .icon-unie046 {
+        color: red;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<div class="container" id="container">
+    <div class="tips" id="tips">拖动文件到此上传</div>
+    <ul class="none" id="files">
+
+    </ul>
+</div>
+<div id="template" class="none">
+    <li class="file"><span class="text">
+            <span class="icon iconfont icon-jiazai"></span><span class="name">aaa</span>
+        </span>
+        <div class="progress"></div>
+    </li>
+</div>
+<script>
+    (function ($) {
+        $("#container").on('dragenter', function (e) {
+            if (!$('#tips').hasClass('none')) {
+                $('#tips').text('松开鼠标即可上传')
+            }
+            $("#container").addClass('containerDrop');
+        }).on('dragleave', function (e) {
+            if (!$('#tips').hasClass('none')) {
+                $('#tips').text('拖动文件到此上传')
+            }
+            $("#container").removeClass('containerDrop');
+        }).on("dragover", function (e) {
+            e.preventDefault()
+        }).on('drop', function (e) {
+            e.preventDefault();
+            if (!$('#tips').hasClass('none')) {
+                $('#tips').addClass('none');
+                $('#files').removeClass('none');
+            }
+            $("#container").removeClass('containerDrop');
+            var files = e.originalEvent.dataTransfer.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                console.log(file);
+                var li = $('#template li').clone();
+                var icon = li.find('.icon');
+                var name = li.find('.name');
+                var progress = li.find('.progress');
+                name.text(file.name);
+                $('#files').append(li);
+                Upload(file, progress, icon);
+                // simuUpload(file, progress, icon);
+            }
+        })
+        var simuUpload = function (file, progressEle, iconEle) {
+            var progress = 0;
+            var timer = setInterval(function () {
+                progress = progress + Math.floor(Math.random() * 3);
+                if (progress < 100) {
+                    progressEle.css('width', progress + '%');
+                } else {
+                    clearInterval(timer);
+                    progressEle.css('width', '0px');
+                    iconEle.removeClass('icon-jiazai').addClass('icon-chenggong');
+                }
+            }, 100);
+
+        }
+        var Upload = function (file, progressEle, iconEle) {
+            var fd = new FormData();
+            fd.append('file', file);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'upload.php', true);
+            xhr.upload.onprogress = function (e) {
+                percent = 100 * e.loaded / e.total;
+                progressEle.css('width', percent + '100%');
+            }
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    progressEle.css('width', '0px');
+                    iconEle.removeClass('icon-jiazai').addClass('icon-chenggong');
+                } else {
+                    iconEle.removeClass('icon-jiazai').addClass('icon-unie046');
+                }
+            }
+            xhr.send(fd);
+        }
+    })(jQuery);
+</script>
+</body>
+</html>
