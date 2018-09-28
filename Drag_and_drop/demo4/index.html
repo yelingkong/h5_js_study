@@ -131,8 +131,8 @@
                 var progress = li.find('.progress');
                 name.text(file.name);
                 $('#files').append(li);
-                Upload(file, progress, icon);
-                // simuUpload(file, progress, icon);
+                // Upload(file, progress, icon);
+                simuUpload(file, progress, icon);
             }
         })
         var simuUpload = function (file, progressEle, iconEle) {
