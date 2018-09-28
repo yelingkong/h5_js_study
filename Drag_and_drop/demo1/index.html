@@ -7,21 +7,25 @@
 </head>
 <body>
 <style>
-    .container{
-        width:200px;
-        height:200px;
+    .container {
+        width: 200px;
+        height: 200px;
         background: yellow;
     }
-    .containerDrop{
-        background-color:green;
+
+    .containerDrop {
+        background-color: green;
     }
-    .target{
-        width:100px;
-        height:100px;
+
+    .target {
+        width: 100px;
+        height: 100px;
         background-color: pink;
     }
-    .hide{
-        display: none;}
+
+    .hide {
+        display: none;
+    }
 </style>
 <div
         class="container"
@@ -32,36 +36,36 @@
         ondragenter="dragendContainer(event)"
         id="container"></div>
 <div class="target" id="target" draggable="true"
-ondragstart="dragstart(event)"
+     ondragstart="dragstart(event)"
      ondragend="dragendTarget(event)"
      ondrag="drag(event)"
 ></div>
 <img src="test.jpg" id="image" class="hide" alt="">
 <script>
-    var dragstart=function(e){
-        e.dataTransfer.setData("Text",e.target.id);
-        e.dataTransfer.setDragImage($("#image").clone().removeClass('hide')[0],0,0);
+    var dragstart = function (e) {
+        e.dataTransfer.setData("Text", e.target.id);
+        e.dataTransfer.setDragImage($("#image").clone().removeClass('hide')[0], 0, 0);
     }
-    var drop=function(e){
+    var drop = function (e) {
         e.preventDefault();
-        var data=e.dataTransfer.getData("Text");
+        var data = e.dataTransfer.getData("Text");
         e.target.appendChild(document.getElementById(data))
     }
-    var dragover=function(e){
+    var dragover = function (e) {
         e.preventDefault();
         $("#container").addClass("containerDrop");
     }
-    var dragleave=function(e){
+    var dragleave = function (e) {
         e.preventDefault();
         $("#container").removeClass("containerDrop");
     }
-    var dragendContainer=isFunction(){
-        console.log('dragendContainer')
+    var dragendContainer = function () {
+        console.log('dragendContainer');
     }
-    var drag=function(){
+    var drag = function () {
         console.log("drag")
     }
-    var dragendTarget=function(){
+    var dragendTarget = function () {
         console.log("dragendTarget")
     }
 </script>
